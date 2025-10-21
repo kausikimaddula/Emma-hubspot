@@ -1,35 +1,115 @@
-# Kaggle -> HubSpot Demo
-## Overview
-This project demonstrates:
-- Using Playwright (headless Chromium) to log in to Kaggle and download a CSV dataset.
-- Parsing the CSV to extract `Name` and `Sex` columns.
-- Storing data in MySQL using Sequelize (TypeScript).
-- Sending contacts to HubSpot via their Contacts API.
+# Kaggle-HubSpot Integration
 
-## What is included
-- `src/` - TypeScript source code
-- `migrations/` - Sequelize migration to create `BabyNames` table
-- `.env.example` - example environment variables
-- `package.json`, `tsconfig.json`
+A TypeScript application that integrates Kaggle dataset scraping with HubSpot CRM, featuring automated data pipeline and robust scraping capabilities.
 
-## How to run (development)
-1. Copy `.env.example` to `.env` and fill values:
-   - KAGGLE_EMAIL, KAGGLE_PASSWORD
-   - HUBSPOT_API_KEY_OR_TOKEN (HubSpot private app access token)
-   - MYSQL_* (host, port, user, password, database)
-2. Install deps:
-   ```bash
-   npm install
-   npx playwright install
-   ```
-3. Run migrations:
-   ```bash
-   npx sequelize-cli db:migrate
-   ```
-   (or run `ts-node src/db/runMigrations.ts` if you prefer)
-4. Run the scraper & importer:
-   ```bash
-   npm run start
-   ```
-## Notes & production proposals
-See `PROPOSAL.md` for suggested steps to harden and move to production.
+## Features
+
+- Automated Kaggle dataset scraping using Playwright
+- Data processing and transformation
+- HubSpot CRM integration
+- MySQL database integration using Sequelize ORM
+- Automated migrations system
+- TypeScript for type safety
+
+## Prerequisites
+
+- Node.js (Latest LTS version recommended)
+- MySQL database
+- TypeScript knowledge
+- HubSpot API credentials
+- Kaggle account credentials
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/kausikimaddula/Emma-hubspot.git
+cd Emma-hubspot
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Set up environment variables:
+Create a `.env` file in the root directory with the following variables:
+```env
+DATABASE_URL=mysql://user:password@localhost:3306/database_name
+HUBSPOT_API_KEY=your_hubspot_api_key
+KAGGLE_USERNAME=your_kaggle_username
+KAGGLE_KEY=your_kaggle_key
+```
+
+4. Run database migrations:
+```bash
+npm run migrate
+```
+
+## Usage
+
+1. Build the project:
+```bash
+npm run build
+```
+
+2. Start the application:
+```bash
+npm start
+```
+
+## Project Structure
+
+```
+├── migrations/              # Database migration files
+├── src/
+│   ├── db/                 # Database configuration and models
+│   ├── utils/              # Utility functions including CSV parsing
+│   ├── hubspot.ts         # HubSpot integration logic
+│   ├── playwrightScript.ts # Kaggle scraping implementation
+│   └── index.ts           # Application entry point
+├── package.json
+└── tsconfig.json
+```
+
+## Scripts
+
+- `npm run build` - Transpiles TypeScript to JavaScript
+- `npm start` - Runs the application
+- `npm run migrate` - Runs database migrations
+- `npm run lint` - Runs ESLint for code quality
+
+## Production Considerations
+
+For production deployment, consider:
+
+1. **Security**
+   - Use secure secret management (Vault/AWS Secrets Manager)
+   - Implement token rotation for HubSpot
+
+2. **Scalability**
+   - Containerize using Docker
+   - Deploy to cloud platforms (ECS/GKE)
+   - Implement job scheduling
+
+3. **Reliability**
+   - Add retry mechanisms
+   - Implement proper error handling
+   - Set up monitoring and alerting
+
+4. **Data Pipeline**
+   - Use staging databases
+   - Implement schema versioning
+   - Add message queues for reliable delivery
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
+
+## License
+
+This project is private and proprietary. All rights reserved.
